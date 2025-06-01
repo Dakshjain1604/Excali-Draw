@@ -1,18 +1,20 @@
-import { NextFunction,Request,Response } from "express";
-import { JWT_SECRET } from "@repo/backend-common/config"
-import jwt from "jsonwebtoken"
+import { NextFunction, Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "@repo/backend-common/config";
 
 
-export function authmiddleware(req:Request,res:Response,next:NextFunction){
-    const token=req.headers["authorization"]?? "";
-    const decoded =jwt.verify(token,JWT_SECRET);
-    if(decoded.userId){
+export function authmiddleware(req: Request, res: Response, next: NextFunction) {
+    const token = req.headers["authorization"] ?? "";
 
+    const decoded = jwt.verify(token, JWT_SECRET);
 
-    }else{
+    if (decoded) {
+        // @ts-ignore: TODO: Fix this
+        req.userId = decoded.id;
+        next();
+    } else {
         res.status(403).json({
-            message:"Unauthorized"
+            message: "Unauthorized"
         })
     }
 }
-

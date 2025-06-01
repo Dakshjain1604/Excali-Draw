@@ -1,39 +1,83 @@
 import express from "express";
-import zod from "zod";
+import jwt from "jsonwebtoken";
+import { JWT_SECRET } from '@repo/backend-common/config';
+import { authmiddleware } from "./middleware";
+import { CreateUserSchema, SigninSchema, createRoomSchema } from "@repo/common/types";
+import { prismaClient } from "@repo/db/client";
+import cors from "cors";
 import bcrypt from "bcrypt";
-const app=express();
+
+const app = express();
 app.use(express.json());
-import {CreateUserSchema,SigninSchema} from "@repo/common/types"
+app.use(cors())
+app.get('/',(req,res)=>{
+    res.send("hi there");
+})
 
-app.post("/signup",async (req,res)=>{
-    const user=CreateUserSchema.safeParse(req.body)
-    if(!user){
+app.post("/signup", async (req, res) => {
+
+    const parsedData = CreateUserSchema.safeParse(req.body);
+    if (!parsedData.success) {
+        console.log(parsedData.error);
+        res.json({
+            message: "Incorrect inputs"
+        })
+        return;
+    }
+    try {
+        const hashedPassword = await bcrypt.hash(parsedData.data.password, 10);
+        const user = await prismaClient.user.create({
+            data: {
+                email: parsedData.data?.email,
+                password: hashedPassword,
+                name: parsedData.data.name
+            }
+        })
+        res.json({
+            userId: user.id
+        })
+    } catch(e) {
         res.status(411).json({
-            message:"incorrect creds"
+            message: "User already exists with this username"
         })
     }
-    const foundUser=await User.findOne({
-        username:user.data?.username
-    })
-    if(foundUser){
-        res.status(400).json({
-            message:"user already exists"
+})
+
+app.post("/signin", async (req, res) => {
+    const parsedData = SigninSchema.safeParse(req.body);
+    if (!parsedData.success) {
+        res.json({
+            message: "Incorrect inputs"
         })
+        return;
     }
-    const hashedPassword=bcrypt.hash(user.data?.password,10)
-    await User.create({
-        username:user.data?.username,
-        password:user.data?.password,
-        firstname:user.data?.firstname,
-        lastname:user.data?.lastname
+
+    const hashedPassword = await bcrypt.hash(parsedData.data.password, 10);
+    const user = await prismaClient.user.findFirst({
+        where: {
+            email: parsedData.data.email,
+            password: hashedPassword
+        }
     })
-    res.status(200).json({
-        message:"user sucessfully created "
+
+    if (!user) {
+        res.status(403).json({
+            message: "Not authorized"
+        })
+        return;
+    }
+
+    const token = jwt.sign({
+        userId: user?.id
+    }, JWT_SECRET);
+
+    res.json({
+        token
     })
 })
 
-app.post("/login",(req,res)=>{
-   const user=SigninSchema.safeParse(req.body);
-})
 
-app.listen(4000);
+app.post('/')
+
+
+app.listen(3001);
