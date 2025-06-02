@@ -10,7 +10,7 @@ export function authmiddleware(req: Request, res: Response, next: NextFunction) 
 
     if (decoded) {
         // @ts-ignore: TODO: Fix this
-        req.userId = decoded.id;
+        req.userId = decoded.userId;
         next();
     } else {
         res.status(403).json({
