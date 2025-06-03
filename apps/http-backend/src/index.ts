@@ -18,6 +18,8 @@ app.get("/", (req, res) => {
   res.send("hi there");
 });
 
+
+
 app.post("/signup", async (req, res) => {
   const parsedData = CreateUserSchema.safeParse(req.body);
   if (!parsedData.success) {
@@ -127,5 +129,8 @@ app.post('/room', authmiddleware , async (req,res)=>{
     })
   }
 })
+
+
+
 
 app.listen(3001);
