@@ -1,84 +1,82 @@
-# Turborepo starter
+# 🖌️ DrawSync – Real-Time Collaborative Whiteboard
 
-This Turborepo starter is maintained by the Turborepo core team.
+DrawSync is a full-stack, collaborative whiteboard application inspired by [Excalidraw](https://excalidraw.com/), built using modern web technologies. It allows multiple users to draw simultaneously on a shared canvas with real-time synchronization via WebSockets.
 
-## Using this example
+## 🚀 Features
 
-Run the following command:
+- 🧑‍🤝‍🧑 **Real-time collaboration** using websockets
+- ✍️ **Freehand drawing and shape creation**
+- 💾 **Persistent canvas state** per session
+- 🔐 **User authentication** using JWT
+- 📄 **Export canvas** as PNG or SVG
+- 📱 **Responsive UI** built with TailwindCSS
+- ⚙️ Built with **Next.js**, **Express.js**, and **MongoDB**
 
-```sh
-npx create-turbo@latest
-```
+---
 
-## What's inside?
+## 🛠️ Tech Stack
 
-This Turborepo includes the following packages/apps:
+| Layer        | Tech |
+|-------------|------|
+| Frontend    | Next.js, React, TailwindCSS, Canvas API |
+| Backend     | Node.js, Express.js, Socket.IO |
+| Auth        | JWT-based authentication |
+| Database    | PostgreSql |
+| Deployment  | Vercel / Render (in progress) |
 
-### Apps and Packages
+---
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+## 🧩 Architecture
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+- **Client** draws on an HTML5 canvas and emits drawing data (coordinates, color, tool) via WebSockets.
+- **Server** relays updates to all connected users in the same room.
+- Users receive updates and re-render the canvas in real-time.
+- Authenticated users can create and join drawing rooms.
 
-### Utilities
+---
 
-This Turborepo has some additional tools already setup for you:
+## 🔐 Authentication
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+- JWT-based login and session management
+- Auth flow handled on both client and server using secure tokens
+- Protected API routes for room access
 
-### Build
+---
 
-To build all apps and packages, run the following command:
+## 📸 Demo
 
-```
-cd my-turborepo
-pnpm build
-```
+> 🚧 Live demo coming soon  
 
-### Develop
 
-To develop all apps and packages, run the following command:
+---
 
-```
-cd my-turborepo
-pnpm dev
-```
+## 🧪 Future Improvements
 
-### Remote Caching
+- Collaborative text elements
+- Undo/redo support
+- Room persistence via postgreSQL
+- User presence indicators (avatars, cursors)
+- Canvas zoom and pan
+- Voice/video chat integration
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+---
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+## 💡 Inspiration
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+This project is inspired by:
+- [Excalidraw](https://github.com/excalidraw/excalidraw)
+- Figma-style real-time collaboration
+- Educational use-cases like live tutoring, whiteboard interviews
 
-```
-cd my-turborepo
-npx turbo login
-```
+---
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+## 👨‍💻 Author
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+**Daksh Jain**  
+[Portfolio](https://portfolio-dakshjain.vercel.app) • [GitHub](https://github.com/Dakshjain1604) • [LinkedIn](https://linkedin.com/in/daksh-jain16)
 
-```
-npx turbo link
-```
+---
 
-## Useful Links
+## 📝 License
 
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+MIT License
